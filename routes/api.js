@@ -1,10 +1,12 @@
 const cors = require('cors');
 const express = require('express');
 const app = express();
+const config = require('../middleware/config');
 
 // Set app headers to allow localhost:8080 to acces the api 
+let allowedOrigins = config.allowed.split(', ');
 app.use(cors({
-    origin: 'http://localhost:8080',
+    origin: allowedOrigins,
     credentials: true
 }));
 
