@@ -21,6 +21,21 @@ app.get('/', (req, res) => {
     });
 });
 
+app.get('/tv', (req, res) => {
+    res.send({
+        list: {
+            tv: {
+                name: 'Samsung',
+                image: 'https://via.placeholder.com/150'
+            },
+            tv2: {
+                name: 'Samsung2',
+                image: 'https://via.placeholder.com/150'
+            }
+        }
+    });
+});
+
 
 // export the app
 module.exports = app;
