@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express();
 const chalk = require('chalk');
+const knex = require('knex')(require('../middleware/config').db);
 const config = require('./middleware/config');
 
 // load the api route from the routes folder with the route prefix /api
