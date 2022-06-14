@@ -1,0 +1,19 @@
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+exports.up = function(knex) {
+    return knex.schema.createTable('example', function (table) {
+        table.increments();
+        table.string('examplename');
+        table.timestamps();
+      })
+};
+
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+exports.down = function(knex) {
+  
+};
