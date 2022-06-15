@@ -1,8 +1,8 @@
+const config = require('./middleware/config');
 const express = require('express');
 const router = express();
 const chalk = require('chalk');
-const knex = require('knex')(require('../middleware/config').db);
-const config = require('./middleware/config');
+const knex = require('knex')(config.db);
 
 // load the api handler with the route prefix /api
 router.use('/api', require('./api'));
