@@ -31,6 +31,7 @@ app.get('/tv', (req, res) => {
                     return {
                         id: tv.id,
                         name: tv.name,
+                        // team: tv.team_id,
                         ipaddress: tv.ipaddress
                     }
                 }),
