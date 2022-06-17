@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const config = require('../middleware/config');
 const fs = require('fs');
+const mysql = require("mysql");
 
 // Set app headers to allow localhost:8080 to acces the api 
 let allowedOrigins = config.allowed.split(', ');
@@ -11,20 +12,29 @@ app.use(cors({
     credentials: true
 }));
 
+// Make connection to database
+var con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "remvee"
+});
+
 app.get('/tv', (req, res) => {
-    res.send({
-        list: {
-            tv: {
-                name: 'Omen',
-                status: 'online',
-                image: 'https://via.placeholder.com/150'
-            },
-            tv2: {
-                name: 'Aldi Strijders',
-                status: 'offline',
-                image: 'https://via.placeholder.com/150'
-            }
-        }
+    // Get all TV's from database
+    con.query("SELECT * FROM tv", function (err, result, fields) {
+        if (err) throw err;
+        res.send({
+            message: 'These are all the TVs',
+            list:
+                result.map(tv => {
+                    return {
+                        id: tv.id,
+                        name: tv.name,
+                        ipaddress: tv.ipaddress
+                    }
+                }),
+        });
     });
 });
 
