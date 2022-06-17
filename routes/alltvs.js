@@ -14,10 +14,10 @@ app.use(cors({
 
 // Make connection to database
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "remvee"
+    host: config.db.connection.host,
+    user: config.db.connection.user,
+    password: config.db.connection.password,
+    database: config.db.connection.database
 });
 
 app.get('/tv', (req, res) => {
