@@ -5,6 +5,7 @@ const config = require('./middleware/config');
 const fs = require('fs');
 const chalk = require('chalk');
 
+app.use(express.json())
 // Set app headers to allow localhost:8080 to acces the api 
 let allowedOrigins = config.allowed.split(', ');
 app.use(cors({
