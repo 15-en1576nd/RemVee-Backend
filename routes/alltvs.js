@@ -13,12 +13,9 @@ app.use(cors({
 }));
 
 // Make connection to database
-var con = mysql.createConnection({
-    host: config.db.connection.host,
-    user: config.db.connection.user,
-    password: config.db.connection.password,
-    database: config.db.connection.database
-});
+var con = mysql.createConnection(
+    config.db.connection
+);
 
 app.get('/tv', (req, res) => {
     // Get all TV's from database
@@ -35,6 +32,27 @@ app.get('/tv', (req, res) => {
                         ipaddress: tv.ipaddress
                     }
                 }),
+        });
+    });
+});
+
+app.post('/tv', (req, res) => {
+    // Add a TV to the mysql database with the given name and ipaddress
+    let name = req.body.name;
+    let ipaddress = req.body.ipaddress;
+    // let team = req.body.team;
+
+    let sql = "INSERT INTO tv (name, ipaddress, created_at) VALUES ('" + req.body.name + "', '" + req.body.ipaddress + "', NOW())";
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        res.status(201).send({
+            message: 'TV added to database',
+            id: result.insertId,
+            name: name,
+            ipaddress: ipaddress,
+            // team: team
+            created_at: result.created,
+            updated_at: result.updated
         });
     });
 });
