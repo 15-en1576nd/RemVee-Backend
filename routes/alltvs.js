@@ -36,6 +36,22 @@ app.get('/tv', (req, res) => {
     });
 });
 
+app.get('/tv/:id', (req, res) => {
+    // Get TV with id from database
+    con.query("SELECT * FROM tv WHERE id = ?", [req.params.id], function (err, result, fields) {
+        if (err) throw err;
+        res.status(200).send({
+            message: 'This is the TV with id: ' + req.params.id,
+            tv: {
+                id: result[0].id,
+                name: result[0].name,
+                // team: result[0].team_id,
+                ipaddress: result[0].ipaddress
+            }
+        });
+    });
+});
+
 app.post('/tv', (req, res) => {
     // Add a TV to the mysql database with the given name and ipaddress
     let name = req.body.name;
@@ -53,6 +69,19 @@ app.post('/tv', (req, res) => {
             // team: team
             created_at: result.created,
             updated_at: result.updated
+        });
+    });
+});
+
+app.delete('/tv/:id', (req, res) => {
+    // Delete a TV from the mysql database with the given id
+    let id = req.params.id;
+    let sql = "DELETE FROM tv WHERE id = " + id;
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        res.status(201).send({
+            message: 'TV deleted from database',
+            id: id
         });
     });
 });
