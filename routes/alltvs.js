@@ -73,6 +73,28 @@ app.post('/tv', (req, res) => {
     });
 });
 
+// Update a TV with the given id
+app.put('/tv/:id', (req, res) => {
+    let name = req.body.name;
+    let ipaddress = req.body.ipaddress;
+    let id = req.params.id;
+    // let team = req.body.team;
+    
+    let sql = "UPDATE tv SET name = '" + name + "', ipaddress = '" + ipaddress + "', updated_at = NOW() WHERE id = " + id;
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        res.status(200).send({
+            message: 'TV with id: ' + req.params.id + ' updated',
+            id: id,
+            name: name,
+            ipaddress: ipaddress,
+            // team: team
+            created_at: result.created,
+            updated_at: result.updated
+        });
+    });
+});
+
 app.delete('/tv/:id', (req, res) => {
     // Delete a TV from the mysql database with the given id
     let id = req.params.id;
