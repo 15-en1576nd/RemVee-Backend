@@ -4,6 +4,7 @@ const app = express();
 const config = require('../middleware/config');
 const fs = require('fs');
 const mysql = require("mysql");
+const {checkIp, validateIp} = require('../src/checkIp');
 
 // Set app headers to allow localhost:8080 to acces the api 
 let allowedOrigins = config.allowed.split(', ');
@@ -52,34 +53,81 @@ app.get('/tv/:id', (req, res) => {
     });
 });
 
-app.post('/tv', (req, res) => {
-    // Add a TV to the mysql database with the given name and ipaddress
+app.post('/tv', async (req, res) => {
     let name = req.body.name;
     let ipaddress = req.body.ipaddress;
     // let team = req.body.team;
 
-    let sql = "INSERT INTO tv (name, ipaddress, created_at) VALUES ('" + req.body.name + "', '" + req.body.ipaddress + "', NOW())";
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        res.status(201).send({
-            message: 'TV added to database',
-            id: result.insertId,
-            name: name,
-            ipaddress: ipaddress,
-            // team: team
-            created_at: result.created,
-            updated_at: result.updated
+    // Check if the ipaddress is valid
+    if(!validateIp(ipaddress)) {
+        res.status(401).send({
+            message: 'This ipaddress is not valid!'
         });
-    });
+        return;
+    }
+
+    // Check if the ipaddress is in the database
+    if(!await checkIp(ipaddress)) {
+        res.status(401).send({
+            message: 'This ipaddress is already in use!'
+        });
+        return;
+    }
+
+    // Check if the name and ipaddress are not empty
+    if(!ipaddress || !name) {
+        res.status(400).send({
+            message: 'Name or Ipaddress is missing!'
+        });
+        return;
+    } else {
+        // Add the TV to the database
+        let sql = "INSERT INTO tv (name, ipaddress, created_at) VALUES ('" + req.body.name + "', '" + req.body.ipaddress + "', NOW())";
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            res.status(201).send({
+                message: 'TV added to database',
+                id: result.insertId,
+                name: name,
+                ipaddress: ipaddress,
+                // team: team
+                created_at: result.created,
+                updated_at: result.updated
+            });
+        });
+    }
 });
 
 // Update a TV with the given id
-app.put('/tv/:id', (req, res) => {
+app.put('/tv/:id', async (req, res) => {
     let name = req.body.name;
     let ipaddress = req.body.ipaddress;
     let id = req.params.id;
     // let team = req.body.team;
     
+    // Check if the ipaddress is valid
+    if(!validateIp(ipaddress)) {
+        res.status(401).send({
+            message: 'This ipaddress is not valid!'
+        });
+        return;
+    }
+
+    // Check if the ipaddress is in the database
+    if(!await checkIp(ipaddress)) {
+        res.status(401).send({
+            message: 'This ipaddress is already in use!'
+        });
+        return;
+    }
+
+    // Check if the name and ipaddress are not empty
+    if(!ipaddress || !name) {
+        res.status(400).send({
+            message: 'Name or Ipaddress is missing!'
+        });
+        return;
+    } else {
     let sql = "UPDATE tv SET name = '" + name + "', ipaddress = '" + ipaddress + "', updated_at = NOW() WHERE id = " + id;
     con.query(sql, function (err, result) {
         if (err) throw err;
@@ -93,6 +141,7 @@ app.put('/tv/:id', (req, res) => {
             updated_at: result.updated
         });
     });
+}
 });
 
 app.delete('/tv/:id', (req, res) => {
