@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    return knex.schema.createTable('Tv', function (table) {
+    return knex.schema.createTable('tv', function (table) {
         table.increments();
         table.string('name');
         // table.unsignedBigInteger('team_id');
