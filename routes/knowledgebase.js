@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const config = require('../middleware/config');
 const fs = require('fs');
-const mysql = require("mysql");
+const mysql = require('mysql');
 
 // Set app headers to allow localhost:8080 to acces the api 
 let allowedOrigins = config.allowed.split(', ');
@@ -18,17 +18,17 @@ var con = mysql.createConnection(
 );
 
 // Get all topics from database for knowledgebase
-app.get('/KnowledgeBaseTopics', (req, res) => {
-        con.query("SELECT * FROM KnowledgeBaseTopics", function (err, result, fields) {
+app.get('/knowledgebase', (req, res) => {
+        con.query("SELECT * FROM knowledgebase", function (err, result, fields) {
             if (err) throw err;
             res.send({
-                message: 'These are all the topics in the KnowledgeBaseTopics',
+                message: 'These are all the topics in the knowledgebase',
                 list:
-                    result.map(KnowledgeBaseTopics => {
+                    result.map(knowledgebase => {
                         return {
-                            id: KnowledgeBaseTopics.id,
-                            name: KnowledgeBaseTopics.name,
-                            description: KnowledgeBaseTopics.description,
+                            id: knowledgebase.id,
+                            name: knowledgebase.name,
+                            description: knowledgebase.description,
                         }
                     }),
             });
