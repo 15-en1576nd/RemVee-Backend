@@ -6,7 +6,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-  return knex.schema.createTable('KnowledgeBaseTopics', (table) => {
+  return knex.schema.createTable('knowledgebase', (table) => {
     table.increments('id').primary();
     table.string('title');
     table.longText('description');
@@ -19,5 +19,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.dropTable('KnowledgeBaseTopics');
+  return knex.schema.dropTable('knowledgebase');
 };
