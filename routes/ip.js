@@ -17,9 +17,7 @@ var allowedIpaddress = config.allowed_ipaddress;
 // basic route at /api
 app.get('/ip', (req, res) => {
     res.status(200).send({
-        data: {
-            allowedIpaddress: allowedIpaddress,
-        }
+        allowedIpaddress: 'The allowed ip of school',
     });
 });
 
@@ -28,22 +26,13 @@ app.post('/ip', (req, res) => {
     let ipaddress = req.body.ipaddress;
     
     // Check if the ip address is allowed
-    if (allowedIpaddress.includes(ipaddress)) {
+    if (allowedIpaddress == ipaddress) {
         res.status(200).send({
-            data: {
-                allowedIpaddress: allowedIpaddress,
-                ipaddress: ipaddress,
-            }
+            allowedIp: true,
         });
     } else {
-        res.status(403).send({
-            data: {
-                allowedIpaddress: allowedIpaddress,
-                ipaddress: ipaddress,
-            }
-            // Now user can't access the api
-            
-
+        res.status(200).send({
+            allowedIp: false,
         });
     }
     return;
