@@ -10,5 +10,5 @@ console.log(chalk.blue('[API]') + ' ' + chalk.yellow('Routes loaded'));
 
 // Start the server
 router.listen(config.port, () => {
-    console.log(chalk.blue('[API]') + ' ' + chalk.yellow('Server started on port 3000'));
+    console.log(chalk.blue('[API]') + ' ' + chalk.yellow('Server started on port ' + config.port)); //mart can suck my dingdong
 });
