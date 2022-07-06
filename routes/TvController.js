@@ -20,6 +20,7 @@ app.post('/tv/command', async (req, res) => {
     await tv.send(command)
     .then(_ => res.status(200).send({message: 'Command send to Bravia tv', ipaddress: ipaddress, command: command}))
     .catch(err => res.status(400).send({message: err}));
+    return;
 });
 
     app.post('/tv/status', async (req, res) => {
