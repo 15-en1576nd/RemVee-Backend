@@ -28,8 +28,8 @@ app.post('/tv/command', async (req, res) => {
         let method = req.body.method; // Get method from request
         let tv = new Bravia(ipaddress, "80", "0000"); // Create new tv object with ipaddress and port.
         await tv.system.invoke(method)
-        .then(result => res.status(200).send({message: 'Bravia tv ' + method + ' requested', ipaddress: ipaddress, result: result}))
-        .catch(err => res.status(400).send({message: 'Command did not send to Bravia tv', ipaddress: ipaddress, command: command, error: err}));
+        .then(result => res.status(200).send({message: 'Bravia tv ' + method + ' requested', result: result.status}))
+        .catch(err => res.status(400).send({message: 'Command did not send to Bravia tv', error: err}));
 
     }
     );
