@@ -4,6 +4,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const config = {
     port: process.env.PORT || 3000,
     allowed: process.env.ALLOWED || 'http://localhost:8080',
+    allowed_ipaddress: process.env.ALLOWED_IPADDRESS,
     // Database connection
     db: {
         client: process.env.DB_CLIENT || 'mysql',
